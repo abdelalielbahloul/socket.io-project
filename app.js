@@ -7,19 +7,24 @@ const ioc = require('socket.io-client');
     
 // })
 
-const products = ioc.connect("http://localhost:3000/products"); //connect namespace product emited
+const products = ioc.connect("http://localhost:3000/products", { secure: true, reconnection: true}); //connect namespace product emited
 
 products.on("product", (data) => {
     console.log(`Receivied: `, data);
     
 });
 
-products.emit('joinRoom', 'Room1')
-        .on('error', err => {
-            console.log(err);
-            
-        })
-        .on('success', data => {
-            console.log(data);
-            
-        });
+products
+    .emit('joinRoom', 'Room1')
+    .on('newProduct', res => {
+        console.log(res);
+        
+    })
+    .on('error', err => {
+        console.log(err);
+        
+    })
+    .on('success', data => {
+        console.log(data);
+        
+    });

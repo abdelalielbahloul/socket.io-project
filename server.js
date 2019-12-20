@@ -23,11 +23,16 @@ io
         socket.on('joinRoom', room => {
             if (productRoom.includes(room)) {
                 socket.join(room);
+                io.of("/products")
+                    .in(room).emit('newProduct', "A new product has received");
                 return socket.emit("success", "you are join the room"); 
+
             } else {
                 return socket.emit('error', { msg: "404-not found! The room are u loking for is not exist" });
             }
+
         });
+
         
 });
 
